@@ -14,7 +14,6 @@ class UsersValid(BaseModel):
 def check_users(func):
     async def wrapper(*args):
         from main import async_session
-        print("*args", *args)
         result = await async_session().execute(select(Users).filter_by(id_tg=int(args[0]['from']['id'])))
         answer = result.all()
         if not answer:

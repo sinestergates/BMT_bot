@@ -1,4 +1,3 @@
-
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.dispatcher.filters import Text
 from sqlalchemy import select
@@ -18,28 +17,20 @@ async_session = sessionmaker(
 bot = Bot(token=settings.TOKEN)
 dp = Dispatcher(bot)
 
+
 @dp.callback_query_handler(Text(startswith="_lesson_"))
 async def choose_lesons(call: types.CallbackQuery):
-    print('lessons_choose')
     t = await async_session().execute(
         select(Tasks).filter_by(id=2))
     result = t.scalar()
     with open(f"{result.name}.txt", "wb") as f:
         f.write(result.file)
-    print('resultresult', result.file)
     await call.message.answer_document(open(f"{result.name}.txt", "rb"))
+
 
 @dp.callback_query_handler(Text(startswith="_groups_"))
 async def choose_groups(call: types.CallbackQuery):
     groups = int(call.data.replace('_groups_', ''))
-    '''file_for_add = open("test.txt", "rb").read()
-    file = Tasks(name='tes1t', file=file_for_add)
-    file_add = OperationsDB(
-        async_session,
-        Object=file
-    )
-    await file_add.add_in_db()
-    print('filefile', file)'''
 
     t = await async_session().execute(
         select(TrainingGroups).filter_by(id=groups).options(
