@@ -1,0 +1,7 @@
+aiogram
+sqlalchemy
+psycopg2
+alembic
+asyncpg
+pydantic
+sqlalchemy-file
